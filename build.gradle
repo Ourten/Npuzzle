@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    jcenter()
+}
+
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Maven Artefacts Info
+group = "fr.npuzzle"
+archivesBaseName = "n-puzzle"
+version = "0.1.0"
+
+dependencies {
+    testCompile('org.junit.jupiter:junit-jupiter-api:5.2.0')
+    testCompile('org.mockito:mockito-core:2.20.1')
+    testCompile('org.assertj:assertj-core:3.10.0')
+
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+}
+
+test {
+    useJUnitPlatform()
+    afterTest { desc, result ->
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
+
+jar {
+    dependsOn configurations.runtime
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    manifest {
+        attributes 'Main-Class': 'fr.npuzzle.Main'
+    }
+}
