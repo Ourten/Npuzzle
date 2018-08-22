@@ -7,6 +7,28 @@ import java.util.Optional;
 
 public class Heuristics
 {
+    public int outOfRowAndColumn(State current, State desired)
+    {
+        int outof = 0;
+
+        for (int x = 0; x < current.getData().getGrid().length; x++)
+        {
+            for (int y = 0; y < current.getData().getGrid()[x].length; y++)
+            {
+                Optional<Cell> toCell = Cell.findCell(desired.getData(), current.getData().getCell(x, y));
+
+                if (toCell.isPresent())
+                {
+                    if (toCell.get().getX() != x)
+                        outof++;
+                    if (toCell.get().getY() != y)
+                        outof++;
+                }
+            }
+        }
+        return outof;
+    }
+
     public int hamming(State current, State desired)
     {
         int misplaced = 0;
@@ -15,7 +37,7 @@ public class Heuristics
         {
             for (int y = 0; y < current.getData().getGrid()[x].length; y++)
             {
-                if(current.getData().getGrid()[x][y] != desired.getData().getGrid()[x][y])
+                if (current.getData().getGrid()[x][y] != desired.getData().getGrid()[x][y])
                     misplaced++;
             }
         }
