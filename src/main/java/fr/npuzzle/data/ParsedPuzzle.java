@@ -68,6 +68,18 @@ public class ParsedPuzzle
         return column;
     }
 
+    public ParsedPuzzle copy()
+    {
+        ParsedPuzzle copy = new ParsedPuzzle(this.size);
+
+        for (int x = 0; x < this.grid.length; x++)
+        {
+            for (int y : this.grid[x])
+                copy.grid[x][y] = this.grid[x][y];
+        }
+        return copy;
+    }
+
     @Override
     public String toString()
     {
