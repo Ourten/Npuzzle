@@ -36,7 +36,7 @@ public class ParsedPuzzle
     {
         if (value < 1)
             throw new RuntimeException("Cell cannot be assigned to a number less than 1.");
-        this.grid[x][y] = value;
+        this.grid[y][x] = value;
     }
 
     public void setEmpty(int x, int y)
@@ -46,7 +46,7 @@ public class ParsedPuzzle
 
     public int getCell(int x, int y)
     {
-        return this.grid[x][y];
+        return this.grid[y][x];
     }
 
     public boolean isEmpty(int x, int y)
@@ -54,12 +54,12 @@ public class ParsedPuzzle
         return this.getCell(x, y) == EMPTY;
     }
 
-    public int[] getRow(int x)
+    public int[] getRow(int y)
     {
-        return this.grid[x];
+        return this.grid[y];
     }
 
-    public int[] getColumn(int y)
+    public int[] getColumn(int x)
     {
         int[] column = new int[this.size];
 
