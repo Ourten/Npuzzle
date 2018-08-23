@@ -1,9 +1,9 @@
 package fr.npuzzle.pathfinder;
 
-import fr.npuzzle.data.State;
+import fr.npuzzle.data.ParsedPuzzle;
 
 @FunctionalInterface
 public interface Heuristic
 {
-    int apply(State current, State desired);
+    int apply(ParsedPuzzle current, ParsedPuzzle desired);
 }
