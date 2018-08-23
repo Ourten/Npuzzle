@@ -3,8 +3,8 @@ package fr.npuzzle.data;
 public class State
 {
     private ParsedPuzzle data;
-    private State father;
-    private ActionTaken usedMove;
+    private State        father;
+    private ActionTaken  usedMove;
 
     public State(ParsedPuzzle data, State father, ActionTaken usedMove)
     {
@@ -26,6 +26,13 @@ public class State
     public ActionTaken getUsedMove()
     {
         return usedMove;
+    }
+
+    public int getAncestorCount()
+    {
+        if (this.getFather() != null)
+            return getFather().getAncestorCount() + 1;
+        return 0;
     }
 
     public State copy()
