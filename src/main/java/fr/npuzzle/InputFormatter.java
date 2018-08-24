@@ -9,15 +9,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class InputFormatter {
+public class InputFormatter
+{
 
     private String[] args;
 
-    public InputFormatter(String[] args) {
+    public InputFormatter(String[] args)
+    {
         this.args = args;
     }
 
-    public ParsedPuzzle getRandomPuzzle() {
+    public ParsedPuzzle getRandomPuzzle()
+    {
         Random randomInstance;
         ParsedPuzzle puzzle;
         int x;
@@ -29,8 +32,10 @@ public class InputFormatter {
         randomInstance = new Random();
         size = 3 + randomInstance.nextInt(2);
         puzzle = new ParsedPuzzle(size);
-        while (y < size) {
-            while (x < size) {
+        while (y < size)
+        {
+            while (x < size)
+            {
                 puzzle.setCell(x, y, randomInstance.nextInt(20));
                 x++;
             }
@@ -40,13 +45,15 @@ public class InputFormatter {
         return (puzzle);
     }
 
-    private boolean fillLine(ParsedPuzzle puzzle, String[] words, int y) {
+    private boolean fillLine(ParsedPuzzle puzzle, String[] words, int y)
+    {
         int i;
 
         i = 0;
         if (y >= puzzle.getSize())
             return true;
-        while (i < puzzle.getSize()) {
+        while (i < puzzle.getSize())
+        {
             if (words[i].length() > 7)
                 return false;
             puzzle.setCell(i, y, Integer.parseInt(words[i]));
@@ -55,14 +62,16 @@ public class InputFormatter {
         return true;
     }
 
-    private String[] stringCleaner(String[] array) {
+    private String[] stringCleaner(String[] array)
+    {
         List<String> list = new ArrayList<>(Arrays.asList(array));
         list.removeAll(Collections.singleton(""));
         array = list.toArray(new String[0]);
         return array;
     }
 
-    private ParsedPuzzleMonad puzzleParser(List<String> lines) {
+    private ParsedPuzzleMonad puzzleParser(List<String> lines)
+    {
         int i;
         int currentLine;
         boolean sizeDefined;
@@ -73,19 +82,25 @@ public class InputFormatter {
         sizeDefined = false;
         currentLine = 0;
         i = 0;
-        while (i < lines.size()) {
+        while (i < lines.size())
+        {
             if (lines.get(i).matches("([\\s\\S]*-[0-9][\\s\\S]*)+"))
                 return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NEGATIVE_INTEGER));
             lines.set(i, lines.get(i).replace('#', '\0'));
-            if ((currentWords = stringCleaner(lines.get(i).split("([^0-9])+"))).length > 0) {
-                if (sizeDefined && result.getSize() > currentWords.length && currentLine < result.getSize()) {
+            if ((currentWords = stringCleaner(lines.get(i).split("([^0-9])+"))).length > 0)
+            {
+                if (sizeDefined && result.getSize() > currentWords.length && currentLine < result.getSize())
+                {
                     i++;
                     continue;
                 }
-                if (!sizeDefined) {
+                if (!sizeDefined)
+                {
                     result = new ParsedPuzzle(Integer.parseInt(currentWords[0]));
                     sizeDefined = true;
-                } else {
+                }
+                else
+                {
                     if (!fillLine(result, currentWords, currentLine))
                         return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.INT_TOO_LARGE));
                     currentLine++;
@@ -98,34 +113,44 @@ public class InputFormatter {
         return (new ParsedPuzzleMonad(result));
     }
 
-    public ParsedPuzzleMonad parseFile(String file) {
+    public ParsedPuzzleMonad parseFile(String file)
+    {
         List<String> lines;
 
         lines = null;
-        if (new File(file).canRead()) {
-            try {
+        if (new File(file).canRead())
+        {
+            try
+            {
                 lines = Files.readAllLines(Paths.get(file), StandardCharsets.UTF_8);
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE);
             }
-        } else {
+        }
+        else
+        {
             return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE));
         }
-        return (lines == null ? new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE) : puzzleParser(lines));
+        return (lines == null ? new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE) :
+                puzzleParser(lines));
     }
 
-    private static boolean isArgument(String arg) {
+    private static boolean isArgument(String arg)
+    {
         //ajouter ici les comportements liés aux différents arguments, (retourner 1 si l'arg en est un)
         return (false);
     }
 
-    public List<String> getFiles() {
+    public List<String> getFiles()
+    {
         List<String> files;
         int i;
 
         i = 0;
         files = new Stack<>();
-        while (i < args.length) {
+        while (i < args.length)
+        {
             if (!isArgument(args[i]))
                 files.add(args[i]);
             i++;
