@@ -1,5 +1,6 @@
 package fr.npuzzle.pathfinder;
 
+import fr.npuzzle.data.Cell;
 import fr.npuzzle.data.ParsedPuzzle;
 
 import java.util.Arrays;
@@ -10,9 +11,17 @@ public class SolverCheck
     {
         int inversions = calcInversions(Arrays.stream(puzzle.getGrid()).flatMap(row -> Arrays.stream(row).boxed())
                 .toArray(Integer[]::new));
+
         if (puzzle.getSize() % 2 != 0 && inversions % 2 != 0)
             return false;
-        return puzzle.getSize() % 2 != 0 || inversions % 2 != 0;
+        if (puzzle.getSize() % 2 == 0)
+        {
+            Cell empty = Cell.findCell(puzzle, ParsedPuzzle.EMPTY).get();
+            inversions += empty.getY() * puzzle.getSize() + empty.getX();
+
+            return inversions % 2 == puzzle.getSize() % 2;
+        }
+        return true;
     }
 
     private static int calcInversions(Integer... values)

@@ -34,7 +34,7 @@ public class ParsedPuzzle
 
     public void setCell(int x, int y, int value)
     {
-        if (value < 1)
+        if (value < 0)
             throw new RuntimeException("Cell cannot be assigned to a number less than 1.");
         this.grid[y][x] = value;
     }
@@ -72,10 +72,9 @@ public class ParsedPuzzle
     {
         ParsedPuzzle copy = new ParsedPuzzle(this.size);
 
-        for (int x = 0; x < this.grid.length; x++)
+        for (int x = 0; x < this.getSize(); x++)
         {
-            for (int y : this.grid[x])
-                copy.grid[x][y] = this.grid[x][y];
+            if (this.getSize() >= 0) System.arraycopy(this.grid[x], 0, copy.grid[x], 0, this.getSize());
         }
         return copy;
     }
@@ -108,15 +107,27 @@ public class ParsedPuzzle
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParsedPuzzle that = (ParsedPuzzle) o;
-        return getSize() == that.getSize() &&
-                Arrays.equals(getGrid(), that.getGrid());
+        return getSize() == that.getSize() && gridEquals(that.getGrid());
     }
 
     @Override
     public int hashCode()
     {
         int result = Objects.hash(getSize());
-        result = 31 * result + Arrays.hashCode(getGrid());
+        result = 31 * result + Arrays.deepHashCode(getGrid());
         return result;
+    }
+
+    private boolean gridEquals(int[][] otherGrid)
+    {
+        for (int x = 0; x < this.getSize(); x++)
+        {
+            for (int y = 0; y < this.getSize(); y++)
+            {
+                if (this.getGrid()[x][y] != otherGrid[x][y])
+                    return false;
+            }
+        }
+        return true;
     }
 }

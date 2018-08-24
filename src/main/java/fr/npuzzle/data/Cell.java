@@ -1,5 +1,6 @@
 package fr.npuzzle.data;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Cell
@@ -28,10 +29,35 @@ public class Cell
         {
             for (int y = 0; y < puzzle.getGrid()[x].length; y++)
             {
-                if (puzzle.getGrid()[x][y] == value)
+                if (puzzle.getCell(x, y) == value)
                     return Optional.of(new Cell(x, y));
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return getX() == cell.getX() &&
+                getY() == cell.getY();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getX(), getY());
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Cell{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
