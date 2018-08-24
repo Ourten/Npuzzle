@@ -3,20 +3,20 @@ package fr.npuzzle;
 import fr.npuzzle.data.ParsedPuzzle;
 
 public class ParsedPuzzleMonad {
-    public enum ErrorType {none, cannot_read_file, int_too_large, not_enough_valid_rows, negative_integer}
+    public enum ErrorType {NONE, CANNOT_READ_FILE, INT_TOO_LARGE, NOT_ENOUGH_VALID_ROWS, NEGATIVE_INTEGER}
 
-    ParsedPuzzle puzzle;
-    ErrorType errorType;
+    private ParsedPuzzle puzzle;
+    private ErrorType errorType;
 
-    public String GetErrorMessage() {
+    public String getErrorMessage() {
         switch (errorType) {
-            case cannot_read_file:
+            case CANNOT_READ_FILE:
                 return ("could not read given file");
-            case int_too_large:
+            case INT_TOO_LARGE:
                 return ("into the given file is a number over the limit of an integer, plaese reduce to 7 characters or less");
-            case not_enough_valid_rows:
+            case NOT_ENOUGH_VALID_ROWS:
                 return ("the given file does not contain enough valid rows to extract a puzzle out of it");
-            case negative_integer:
+            case NEGATIVE_INTEGER:
                 return ("negative integer found in file, only positive ones are accepted");
             default:
                 return ("No error happened on parsing");
@@ -25,7 +25,7 @@ public class ParsedPuzzleMonad {
 
     ParsedPuzzleMonad(ParsedPuzzle puzzle) {
         this.puzzle = puzzle;
-        errorType = ParsedPuzzleMonad.ErrorType.none;
+        errorType = ParsedPuzzleMonad.ErrorType.NONE;
     }
 
     ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType errorType) {

@@ -8,20 +8,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
 
 public class InputFormatter {
 
-    public enum EvaluationMethod {methodA, methodB} //TODO
-
-    static EvaluationMethod evalParam;
-    static String[] args;
+    private String[] args;
 
     public InputFormatter(String[] args) {
         this.args = args;
     }
 
-    public static ParsedPuzzle GetRandomPuzzle() {
+    public ParsedPuzzle getRandomPuzzle() {
         Random randomInstance;
         ParsedPuzzle puzzle;
         int x;
@@ -44,7 +40,7 @@ public class InputFormatter {
         return (puzzle);
     }
 
-    private static boolean FillLine(ParsedPuzzle puzzle, String[] words, int y) {
+    private boolean fillLine(ParsedPuzzle puzzle, String[] words, int y) {
         int i;
 
         i = 0;
@@ -59,14 +55,14 @@ public class InputFormatter {
         return true;
     }
 
-    private static String[] StringCleaner(String[] array) {
-        List<String> list = new ArrayList<String>(Arrays.asList(array));
+    private String[] stringCleaner(String[] array) {
+        List<String> list = new ArrayList<>(Arrays.asList(array));
         list.removeAll(Collections.singleton(""));
         array = list.toArray(new String[0]);
         return array;
     }
 
-    private static ParsedPuzzleMonad PuzzleParser(List<String> lines) {
+    private ParsedPuzzleMonad puzzleParser(List<String> lines) {
         int i;
         int currentLine;
         boolean sizeDefined;
@@ -79,31 +75,30 @@ public class InputFormatter {
         i = 0;
         while (i < lines.size()) {
             if (lines.get(i).matches("([\\s\\S]*-[0-9][\\s\\S]*)+"))
-                return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.negative_integer));
+                return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NEGATIVE_INTEGER));
             lines.set(i, lines.get(i).replace('#', '\0'));
-            if ((currentWords = StringCleaner(lines.get(i).split("([^0-9])+"))).length > 0) {
-                if (sizeDefined == true && result.getSize() > currentWords.length && currentLine < result.getSize()) {
+            if ((currentWords = stringCleaner(lines.get(i).split("([^0-9])+"))).length > 0) {
+                if (sizeDefined && result.getSize() > currentWords.length && currentLine < result.getSize()) {
                     i++;
                     continue;
                 }
-                //System.out.printf("this line has %s words, it is (%s) (%s)\n", currentWords.length, lines.get(i), Arrays.toString(currentWords));
                 if (!sizeDefined) {
                     result = new ParsedPuzzle(Integer.parseInt(currentWords[0]));
                     sizeDefined = true;
                 } else {
-                    if (FillLine(result, currentWords, currentLine) == false)
-                        return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.int_too_large));
+                    if (!fillLine(result, currentWords, currentLine))
+                        return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.INT_TOO_LARGE));
                     currentLine++;
                 }
             }
             i++;
         }
         if (result != null && currentLine < result.getSize())
-            return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.not_enough_valid_rows));
+            return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NOT_ENOUGH_VALID_ROWS));
         return (new ParsedPuzzleMonad(result));
     }
 
-    public static ParsedPuzzleMonad ParseFile(String file) {
+    public ParsedPuzzleMonad parseFile(String file) {
         List<String> lines;
 
         lines = null;
@@ -111,13 +106,12 @@ public class InputFormatter {
             try {
                 lines = Files.readAllLines(Paths.get(file), StandardCharsets.UTF_8);
             } catch (IOException e) {
-                new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.cannot_read_file);
+                new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE);
             }
         } else {
-            System.out.printf("\nerror at reading %s, continuing without it...\n", file);
-            return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.cannot_read_file));
+            return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE));
         }
-        return (PuzzleParser(lines));
+        return (lines == null ? new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.CANNOT_READ_FILE) : puzzleParser(lines));
     }
 
     private static boolean isArgument(String arg) {
@@ -125,12 +119,12 @@ public class InputFormatter {
         return (false);
     }
 
-    public static List<String> GetFiles() {
+    public List<String> getFiles() {
         List<String> files;
         int i;
 
         i = 0;
-        files = new Stack<String>();
+        files = new Stack<>();
         while (i < args.length) {
             if (!isArgument(args[i]))
                 files.add(args[i]);
