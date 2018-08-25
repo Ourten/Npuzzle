@@ -17,6 +17,22 @@ public enum Action
         this.yOffset = yOffset;
     }
 
+    public Action reverse()
+    {
+        switch (this)
+        {
+            case UP:
+                return DOWN;
+            case DOWN:
+                return UP;
+            case LEFT:
+                return RIGHT;
+            case RIGHT:
+                return LEFT;
+        }
+        return UP;
+    }
+
     public Optional<State> move(State from)
     {
         Cell toMove = Cell.findCell(from.getData(), ParsedPuzzle.EMPTY).orElse(null);

@@ -40,6 +40,8 @@ public class Pathfinder
 
             for (Action action : Action.values())
             {
+                if (currentNode.getUsedMove() != null && currentNode.getUsedMove().getAction() == action.reverse())
+                    continue;
                 action.move(currentNode).ifPresent(state ->
                 {
                     if (!closedSet.contains(state.getData()))

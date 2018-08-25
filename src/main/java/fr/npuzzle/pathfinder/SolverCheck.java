@@ -1,27 +1,31 @@
 package fr.npuzzle.pathfinder;
 
-import fr.npuzzle.data.Cell;
 import fr.npuzzle.data.ParsedPuzzle;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class SolverCheck
 {
-    public static boolean isSolvable(ParsedPuzzle puzzle)
+    public static boolean isSolvable(ParsedPuzzle start, ParsedPuzzle desired)
     {
-        int inversions = calcInversions(Arrays.stream(puzzle.getGrid()).flatMap(row -> Arrays.stream(row).boxed())
+        int startInversions = calcInversions(Arrays.stream(start.getGrid()).flatMap(row -> Arrays.stream(row).boxed())
                 .toArray(Integer[]::new));
+        int desiredInversions =
+                calcInversions(Arrays.stream(desired.getGrid()).flatMap(row -> Arrays.stream(row).boxed())
+                        .toArray(Integer[]::new));
 
-        if (puzzle.getSize() % 2 != 0 && inversions % 2 != 0)
-            return false;
-        if (puzzle.getSize() % 2 == 0)
+        if (start.getSize() % 2 == 0)
         {
-            Cell empty = Cell.findCell(puzzle, ParsedPuzzle.EMPTY).get();
-            inversions += empty.getY() * puzzle.getSize() + empty.getX();
-
-            return inversions % 2 == puzzle.getSize() % 2;
+            startInversions += Arrays.stream(start.getGrid())
+                    .flatMap(row -> Arrays.stream(row).boxed()).collect(Collectors.toList())
+                    .indexOf(ParsedPuzzle.EMPTY) / start.getSize();
+            desiredInversions += Arrays.stream(desired.getGrid())
+                    .flatMap(row -> Arrays.stream(row).boxed()).collect(Collectors.toList())
+                    .indexOf(ParsedPuzzle.EMPTY) / start.getSize();
         }
-        return true;
+
+        return (startInversions % 2 == desiredInversions % 2);
     }
 
     private static int calcInversions(Integer... values)
