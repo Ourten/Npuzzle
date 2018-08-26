@@ -1,5 +1,6 @@
 package fr.npuzzle;
 
+import fr.npuzzle.data.Parameters;
 import fr.npuzzle.data.ParsedPuzzle;
 
 import java.io.File;
@@ -12,11 +13,29 @@ import java.util.*;
 public class InputFormatter
 {
 
-    private String[] args;
+    private List<String>   files;
+    private ParseTokenizer tokenizer;
+    private Parameters     parameters;
 
     public InputFormatter(String[] args)
     {
-        this.args = args;
+        int i = 0;
+        ParseTokenizer.Token[] tokens;
+        this.files = new ArrayList<String>();
+
+        this.tokenizer = new ParseTokenizer(args, new Parameters());
+        tokens = this.tokenizer.getTokens();
+        this.parameters = this.tokenizer.getData();
+
+        if (this.parameters.getStatus() == Parameters.ArgumentErrors.NONE)
+        {
+            while (i < args.length)
+            {
+                if (tokens[i] == ParseTokenizer.Token.FILE)
+                    this.files.add(args[i]);
+                i++;
+            }
+        }
     }
 
     public ParsedPuzzle getRandomPuzzle()
@@ -136,25 +155,13 @@ public class InputFormatter
                 puzzleParser(lines));
     }
 
-    private static boolean isArgument(String arg)
-    {
-        //ajouter ici les comportements liés aux différents arguments, (retourner 1 si l'arg en est un)
-        return (false);
-    }
-
     public List<String> getFiles()
     {
-        List<String> files;
-        int i;
+        return (this.files);
+    }
 
-        i = 0;
-        files = new Stack<>();
-        while (i < args.length)
-        {
-            if (!isArgument(args[i]))
-                files.add(args[i]);
-            i++;
-        }
-        return files;
+    public Parameters getParameters()
+    {
+        return (this.tokenizer.getData());
     }
 }
