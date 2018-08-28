@@ -23,7 +23,7 @@ public class Cell
         return y;
     }
 
-    public static Optional<Cell> findCell(ParsedPuzzle puzzle, Integer value)
+    public static Optional<Cell> findCell(ParsedPuzzle puzzle, Byte value)
     {
         for (int x = 0; x < puzzle.getGrid().length; x++)
         {

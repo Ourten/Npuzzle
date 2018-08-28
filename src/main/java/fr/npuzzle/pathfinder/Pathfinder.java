@@ -35,6 +35,7 @@ public class Pathfinder
                     result.getMoves().add(currentNode.getUsedMove());
                     currentNode = currentNode.getFather();
                 }
+                Collections.reverse(result.getMoves());
                 return result;
             }
 
@@ -62,7 +63,7 @@ public class Pathfinder
 
         List<Integer> values = new ArrayList<>();
 
-        for (int[] row : puzzle.getGrid())
+        for (byte[] row : puzzle.getGrid())
             for (int value : row)
                 values.add(value);
 
@@ -114,7 +115,7 @@ public class Pathfinder
             }
         }
 
-        Cell empty = Cell.findCell(solution, max).get();
+        Cell empty = Cell.findCell(solution, (byte) max).get();
         solution.setCell(empty.getX(), empty.getY(), 0);
         return solution;
     }

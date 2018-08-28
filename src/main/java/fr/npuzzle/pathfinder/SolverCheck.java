@@ -3,32 +3,37 @@ package fr.npuzzle.pathfinder;
 import fr.npuzzle.data.ParsedPuzzle;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class SolverCheck
 {
     public static boolean isSolvable(ParsedPuzzle start, ParsedPuzzle desired)
     {
-        int startInversions = calcInversions(Arrays.stream(start.getGrid()).flatMap(row -> Arrays.stream(row).boxed())
-                .toArray(Integer[]::new));
-        int desiredInversions =
-                calcInversions(Arrays.stream(desired.getGrid()).flatMap(row -> Arrays.stream(row).boxed())
-                        .toArray(Integer[]::new));
+        int startInversions = calcInversions(from2D(start.getGrid()));
+        int desiredInversions = calcInversions(from2D(desired.getGrid()));
 
         if (start.getSize() % 2 == 0)
         {
-            startInversions += Arrays.stream(start.getGrid())
-                    .flatMap(row -> Arrays.stream(row).boxed()).collect(Collectors.toList())
-                    .indexOf(ParsedPuzzle.EMPTY) / start.getSize();
-            desiredInversions += Arrays.stream(desired.getGrid())
-                    .flatMap(row -> Arrays.stream(row).boxed()).collect(Collectors.toList())
-                    .indexOf(ParsedPuzzle.EMPTY) / start.getSize();
+            startInversions += Arrays.asList(from2D(start.getGrid())).indexOf(ParsedPuzzle.EMPTY) / start.getSize();
+            desiredInversions += Arrays.asList(from2D(desired.getGrid())).indexOf(ParsedPuzzle.EMPTY) / start.getSize();
         }
 
         return (startInversions % 2 == desiredInversions % 2);
     }
 
-    private static int calcInversions(Integer... values)
+    private static Byte[] from2D(byte[][] matrix)
+    {
+        Byte[] result = new Byte[matrix.length * matrix.length];
+
+        int k = 0;
+        for (int i = 0; i < matrix.length; i++)
+        {
+            for (int j = 0; j < matrix[i].length; j++)
+                result[k++] = matrix[i][j];
+        }
+        return result;
+    }
+
+    private static int calcInversions(Byte... values)
     {
         int inversions = 0;
 

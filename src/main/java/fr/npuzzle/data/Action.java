@@ -9,12 +9,12 @@ public enum Action
     LEFT(-1, 0),
     RIGHT(1, 0);
 
-    private int xOffset, yOffset;
+    private byte xOffset, yOffset;
 
     Action(int xOffset, int yOffset)
     {
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
+        this.xOffset = (byte) xOffset;
+        this.yOffset = (byte) yOffset;
     }
 
     public Action reverse()

@@ -5,20 +5,20 @@ import java.util.Objects;
 
 public class ParsedPuzzle
 {
-    public static final int EMPTY = 0;
+    public static final byte EMPTY = 0;
 
     private int     size;
-    private int[][] grid;
+    private byte[][] grid;
 
     public ParsedPuzzle(int size)
     {
         this.size = size;
 
-        this.grid = new int[size][];
+        this.grid = new byte[size][];
 
         for (int i = 0; i < this.grid.length; i++)
         {
-            this.grid[i] = new int[size];
+            this.grid[i] = new byte[size];
         }
     }
 
@@ -27,7 +27,7 @@ public class ParsedPuzzle
         return size;
     }
 
-    public int[][] getGrid()
+    public byte[][] getGrid()
     {
         return grid;
     }
@@ -36,10 +36,10 @@ public class ParsedPuzzle
     {
         if (value < 0)
             throw new RuntimeException("Cell cannot be assigned to a number less than 1.");
-        this.grid[y][x] = value;
+        this.grid[y][x] = (byte) value;
     }
 
-    public void setEmpty(int x, int y)
+    public void setEmpty(byte x, byte y)
     {
         this.grid[x][y] = 0;
     }
@@ -49,19 +49,19 @@ public class ParsedPuzzle
         return this.grid[y][x];
     }
 
-    public boolean isEmpty(int x, int y)
+    public boolean isEmpty(byte x, byte y)
     {
         return this.getCell(x, y) == EMPTY;
     }
 
-    public int[] getRow(int y)
+    public byte[] getRow(byte y)
     {
         return this.grid[y];
     }
 
-    public int[] getColumn(int x)
+    public byte[] getColumn(byte x)
     {
-        int[] column = new int[this.size];
+        byte[] column = new byte[this.size];
 
         for (int i = 0; i < column.length; i++)
             column[i] = this.grid[i][0];
@@ -86,7 +86,7 @@ public class ParsedPuzzle
         builder.append(this.size).append("x").append(this.size);
 
         builder.append("\n");
-        for (int[] row : this.grid)
+        for (byte[] row : this.grid)
         {
             int index = 0;
             for (int cell : row)
@@ -118,7 +118,7 @@ public class ParsedPuzzle
         return result;
     }
 
-    private boolean gridEquals(int[][] otherGrid)
+    private boolean gridEquals(byte[][] otherGrid)
     {
         for (int x = 0; x < this.getSize(); x++)
         {

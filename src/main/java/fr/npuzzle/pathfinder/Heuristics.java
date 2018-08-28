@@ -15,7 +15,7 @@ public class Heuristics
         {
             for (int y = 0; y < current.getGrid()[x].length; y++)
             {
-                Optional<Cell> toCell = Cell.findCell(desired, current.getCell(x, y));
+                Optional<Cell> toCell = Cell.findCell(desired, (byte) current.getCell(x, y));
 
                 if (toCell.isPresent())
                 {
@@ -54,7 +54,7 @@ public class Heuristics
             {
                 if (current.getCell(x, y) == ParsedPuzzle.EMPTY)
                     continue;
-                Optional<Cell> toCell = Cell.findCell(desired, current.getCell(x, y));
+                Optional<Cell> toCell = Cell.findCell(desired, (byte) current.getCell(x, y));
 
                 if (toCell.isPresent())
                     distance += Math.abs(x - toCell.get().getX()) + Math.abs(y - toCell.get().getY());
@@ -73,7 +73,7 @@ public class Heuristics
             {
                 if (current.getCell(x, y) == ParsedPuzzle.EMPTY)
                     continue;
-                Optional<Cell> toCell = Cell.findCell(desired, current.getCell(x, y));
+                Optional<Cell> toCell = Cell.findCell(desired, (byte) current.getCell(x, y));
 
                 if (toCell.isPresent())
                 {
@@ -99,9 +99,9 @@ public class Heuristics
         int y = current.getY();
         while (++x < size)
         {
-            Cell tmpCell = Cell.findCell(desiredPuzzle, currentPuzzle.getCell(x, y)).get();
+            Cell tmpCell = Cell.findCell(desiredPuzzle, (byte) currentPuzzle.getCell(x, y)).get();
 
-            if(currentPuzzle.getCell(tmpCell.getX(), tmpCell.getY()) == 0)
+            if (currentPuzzle.getCell(tmpCell.getX(), tmpCell.getY()) == 0)
                 continue;
 
             if (y == tmpCell.getY())
@@ -123,9 +123,9 @@ public class Heuristics
         int y = current.getY();
         while (++y < size)
         {
-            Cell tmpCell = Cell.findCell(desiredPuzzle, currentPuzzle.getCell(x, y)).get();
+            Cell tmpCell = Cell.findCell(desiredPuzzle, (byte) currentPuzzle.getCell(x, y)).get();
 
-            if(currentPuzzle.getCell(tmpCell.getX(), tmpCell.getY()) == 0)
+            if (currentPuzzle.getCell(tmpCell.getX(), tmpCell.getY()) == 0)
                 continue;
 
             if (x == tmpCell.getX())
