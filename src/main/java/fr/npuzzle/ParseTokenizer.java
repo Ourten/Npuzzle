@@ -122,7 +122,7 @@ public class ParseTokenizer
         else return (Token.FILE);
     }
 
-    public String getErrorMessage(Parameters.ArgumentErrors error)
+    public static String getErrorMessage(Parameters.ArgumentErrors error)
     {
         //todo
         return ("todo error message");
