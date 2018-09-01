@@ -2,6 +2,8 @@ package fr.npuzzle.data;
 
 import fr.npuzzle.pathfinder.Heuristic;
 
+import java.io.File;
+
 public class Parameters
 {
     public enum Heuristics
@@ -12,13 +14,13 @@ public class Parameters
     public enum ArgumentErrors
     {
         NONE, CONFLICT_UNIFORM_GREEDY, WRONG_HEURISTIC_PARAMETER, WRONG_CHAR_FOUND_RANDOM, LUDICROUS_PUZZLE_SIZE,
-        INVALID_PUZZLE_SIZE
+        INVALID_PUZZLE_SIZE, TWO_DEFINED_OUTPUT, FILE_COULD_NOT_BE_WRITTEN
     }
 
     private boolean        greedy             = false;
     private boolean        uniform            = false;
     private Heuristics     specifiedHeuristic = Heuristics.NONE;
-    private String         output             = null;
+    private File           output             = null;
     private boolean        visualizer         = false;
     private int            randomSize         = 0;
     private ArgumentErrors status             = ArgumentErrors.NONE;
@@ -63,12 +65,12 @@ public class Parameters
         this.specifiedHeuristic = specifiedHeuristic;
     }
 
-    public String getOutput()
+    public File getOutput()
     {
         return output;
     }
 
-    public void setOutput(String output)
+    public void setOutput(File output)
     {
         this.output = output;
     }

@@ -2,6 +2,9 @@ package fr.npuzzle;
 
 import fr.npuzzle.data.Parameters;
 
+import java.io.File;
+import java.io.IOException;
+
 public class ParseTokenizer
 {
 
@@ -95,6 +98,8 @@ public class ParseTokenizer
         }
         else if (precedingToken == Token.FILE && param.equals("-o") && !isLast)
         {
+            if (data.getOutput() != null)
+                data.setStatus(Parameters.ArgumentErrors.TWO_DEFINED_OUTPUT);
             return (Token.OUTPUT_TOKEN);
         }
         else if (param.equals("-v"))
@@ -112,7 +117,15 @@ public class ParseTokenizer
         }
         else if (precedingToken == Token.OUTPUT_TOKEN)
         {
-            data.setOutput(param);
+            try
+            {
+                File file = new File(param);
+                file.delete();
+                file.createNewFile();
+                data.setOutput(file);
+            } catch (IOException e) {
+                data.setStatus(Parameters.ArgumentErrors.FILE_COULD_NOT_BE_WRITTEN);
+            }
             return (Token.OUTPUT_PARAMETER_TOKEN);
         }
         else if (precedingToken == Token.RANDOM_TOKEN && identifyRandomSize(data, param))
