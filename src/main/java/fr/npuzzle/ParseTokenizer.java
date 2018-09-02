@@ -4,6 +4,7 @@ import fr.npuzzle.data.Parameters;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 
 public class ParseTokenizer
 {
@@ -55,24 +56,19 @@ public class ParseTokenizer
 
     private boolean identifyRandomSize(Parameters data, String param)
     {
-        int size;
+        BigInteger size;
 
         if (param.matches("([^0-9])+"))
         {
             data.setStatus(Parameters.ArgumentErrors.WRONG_CHAR_FOUND_RANDOM);
             return (false);
         }
-        else if (param.length() > 3)
-        {
-            data.setStatus(Parameters.ArgumentErrors.LUDICROUS_PUZZLE_SIZE);
-            return (false);
-        }
-        if ((size = Integer.parseInt(param)) <= 0)
+        if ((size = new BigInteger(param)).compareTo(new BigInteger("2")) <= 0 || (size = new BigInteger(param)).compareTo(new BigInteger("7")) > 0)
         {
             data.setStatus(Parameters.ArgumentErrors.INVALID_PUZZLE_SIZE);
             return (false);
         }
-        data.setRandomSize(size);
+        data.setRandomSize(size.intValueExact());
         return (true);
     }
 

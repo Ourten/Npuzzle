@@ -5,6 +5,7 @@ import fr.npuzzle.data.ParsedPuzzle;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,6 +17,7 @@ public class InputFormatter
     private List<String>   files;
     private ParseTokenizer tokenizer;
     private Parameters     parameters;
+    private boolean        hasZero = false;
 
     public InputFormatter(String[] args)
     {
@@ -38,14 +40,16 @@ public class InputFormatter
         }
     }
 
-    public ParsedPuzzle getRandomPuzzle()
+    public ParsedPuzzle getRandomPuzzle(int size)
     {
         Random randomInstance;
         ParsedPuzzle puzzle;
         int x;
         int y;
-        int size;
+        int tmp;
+        HashSet<Integer> set;
 
+        set = new HashSet<Integer>();
         x = 0;
         y = 0;
         randomInstance = new Random();
@@ -55,30 +59,45 @@ public class InputFormatter
         {
             while (x < size)
             {
-                puzzle.setCell(x, y, randomInstance.nextInt(20));
+                tmp = -1;
+                while (set.contains(tmp) || tmp <= 0)
+                     tmp = randomInstance.nextInt(99);
+                puzzle.setCell(x, y, tmp);
+                set.add(tmp);
                 x++;
             }
             y++;
             x = 0;
         }
+        puzzle.setCell(randomInstance.nextInt(size), randomInstance.nextInt(size), 0);
         return (puzzle);
     }
 
-    private boolean fillLine(ParsedPuzzle puzzle, String[] words, int y)
+    private ParsedPuzzleMonad.ErrorType fillLine(ParsedPuzzle puzzle, String[] words, int y)
     {
         int i;
+        BigInteger number;
+        HashSet<Integer> set;
 
         i = 0;
+        set = new HashSet<Integer>();
         if (y >= puzzle.getSize())
-            return true;
+            return ParsedPuzzleMonad.ErrorType.NONE;
         while (i < puzzle.getSize())
         {
-            if (words[i].length() > 7)
-                return false;
+            number = new BigInteger(words[i]);
+            if (number.compareTo(new BigInteger("100")) >= 0)
+                return ParsedPuzzleMonad.ErrorType.INT_TOO_LARGE;
+            //todo next condition do not work, will debug another day
+            if (set.contains(number.intValueExact()))
+                return ParsedPuzzleMonad.ErrorType.TWO_SAME_INT;
+            set.add(number.intValueExact());
+            if (number.intValueExact() == 0)
+                hasZero = true;
             puzzle.setCell(i, y, Integer.parseInt(words[i]));
             i++;
         }
-        return true;
+        return ParsedPuzzleMonad.ErrorType.NONE;
     }
 
     private String[] stringCleaner(String[] array)
@@ -96,6 +115,7 @@ public class InputFormatter
         boolean sizeDefined;
         String[] currentWords;
         ParsedPuzzle result;
+        ParsedPuzzleMonad.ErrorType tmp;
 
         result = null;
         sizeDefined = false;
@@ -120,8 +140,9 @@ public class InputFormatter
                 }
                 else
                 {
-                    if (!fillLine(result, currentWords, currentLine))
-                        return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.INT_TOO_LARGE));
+                    tmp = fillLine(result, currentWords, currentLine);
+                    if (tmp != ParsedPuzzleMonad.ErrorType.NONE)
+                        return (new ParsedPuzzleMonad(tmp));
                     currentLine++;
                 }
             }
@@ -129,6 +150,8 @@ public class InputFormatter
         }
         if (result != null && currentLine < result.getSize())
             return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NOT_ENOUGH_VALID_ROWS));
+        if (!hasZero)
+            return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NO_ZERO_IN_PUZZLE));
         return (new ParsedPuzzleMonad(result));
     }
 
