@@ -1,6 +1,7 @@
 package fr.npuzzle;
 
 import fr.npuzzle.data.ActionTaken;
+import fr.npuzzle.data.Parameters;
 import fr.npuzzle.data.ParsedPuzzle;
 import fr.npuzzle.data.State;
 import fr.npuzzle.pathfinder.Heuristics;
@@ -54,6 +55,8 @@ public class OutputManagement
         long start;
         String tmp;
 
+        if (formatter.getParameters().getRandomSize() > 2)
+            files.add("random");
         while (i < files.size())
         {
             currentPuzzle = formatter.parseFile(files.get(i));
@@ -74,7 +77,7 @@ public class OutputManagement
             else
             {
                 currentOutput = currentOutput + "\n" + currentPuzzle.getErrorMessage();
-                System.out.printf(currentPuzzle.getErrorMessage() + "\n");
+                System.out.printf("\n" + currentPuzzle.getErrorMessage());
             }
             i++;
             System.out.printf("\n*************************************");

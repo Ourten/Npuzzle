@@ -18,6 +18,7 @@ public class InputFormatter
     private ParseTokenizer tokenizer;
     private Parameters     parameters;
     private boolean        hasZero = false;
+    HashSet<Integer>       numSet;
 
     public InputFormatter(String[] args)
     {
@@ -40,7 +41,7 @@ public class InputFormatter
         }
     }
 
-    public ParsedPuzzle getRandomPuzzle(int size)
+    public static ParsedPuzzle getRandomPuzzle(int size)
     {
         Random randomInstance;
         ParsedPuzzle puzzle;
@@ -53,7 +54,6 @@ public class InputFormatter
         x = 0;
         y = 0;
         randomInstance = new Random();
-        size = 3 + randomInstance.nextInt(2);
         puzzle = new ParsedPuzzle(size);
         while (y < size)
         {
@@ -77,10 +77,8 @@ public class InputFormatter
     {
         int i;
         BigInteger number;
-        HashSet<Integer> set;
 
         i = 0;
-        set = new HashSet<Integer>();
         if (y >= puzzle.getSize())
             return ParsedPuzzleMonad.ErrorType.NONE;
         while (i < puzzle.getSize())
@@ -88,10 +86,9 @@ public class InputFormatter
             number = new BigInteger(words[i]);
             if (number.compareTo(new BigInteger("100")) >= 0)
                 return ParsedPuzzleMonad.ErrorType.INT_TOO_LARGE;
-            //todo next condition do not work, will debug another day
-            if (set.contains(number.intValueExact()))
+            if (numSet.contains(number.intValueExact()))
                 return ParsedPuzzleMonad.ErrorType.TWO_SAME_INT;
-            set.add(number.intValueExact());
+            numSet.add(number.intValueExact());
             if (number.intValueExact() == 0)
                 hasZero = true;
             puzzle.setCell(i, y, Integer.parseInt(words[i]));
@@ -121,6 +118,7 @@ public class InputFormatter
         sizeDefined = false;
         currentLine = 0;
         i = 0;
+        numSet = new HashSet<Integer>();
         while (i < lines.size())
         {
             if (lines.get(i).matches("([\\s\\S]*-[0-9][\\s\\S]*)+"))
@@ -160,6 +158,13 @@ public class InputFormatter
         List<String> lines;
 
         lines = null;
+        if (file.equals("random"))
+        {
+            if (getParameters().getRandomSize() > 2)
+            {
+                return (new ParsedPuzzleMonad(InputFormatter.getRandomPuzzle(getParameters().getRandomSize())));
+            }
+        }
         if (new File(file).canRead())
         {
             try
