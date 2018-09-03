@@ -12,6 +12,7 @@ public class Pathfinder
     public static PathResult astar(ParsedPuzzle current, ParsedPuzzle desired, Heuristic heuristic)
     {
         PathResult result = new PathResult();
+        result.setStart(current);
 
         PriorityQueue<State> openSet = new PriorityQueue<>(Comparator.comparingInt(
                 (State state) ->

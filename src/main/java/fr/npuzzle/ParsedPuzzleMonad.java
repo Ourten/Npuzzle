@@ -45,6 +45,11 @@ public class ParsedPuzzleMonad
         this.puzzle = null;
     }
 
+    public boolean isErrored()
+    {
+        return this.errorType != ErrorType.NONE;
+    }
+
     public ErrorType getErrorType()
     {
         return errorType;

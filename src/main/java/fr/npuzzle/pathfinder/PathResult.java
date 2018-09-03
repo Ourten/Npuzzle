@@ -1,12 +1,14 @@
 package fr.npuzzle.pathfinder;
 
 import fr.npuzzle.data.ActionTaken;
+import fr.npuzzle.data.ParsedPuzzle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PathResult
 {
+    private ParsedPuzzle start;
     private List<ActionTaken> moves;
     private int               timeComplexity, sizeComplexity;
 
@@ -28,6 +30,16 @@ public class PathResult
     public int getSizeComplexity()
     {
         return sizeComplexity;
+    }
+
+    public ParsedPuzzle getStart()
+    {
+        return start;
+    }
+
+    public void setStart(ParsedPuzzle start)
+    {
+        this.start = start;
     }
 
     public void addTimeComplexity()

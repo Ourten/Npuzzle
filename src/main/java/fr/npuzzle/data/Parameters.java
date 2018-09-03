@@ -1,14 +1,32 @@
 package fr.npuzzle.data;
 
 import fr.npuzzle.pathfinder.Heuristic;
+import fr.npuzzle.pathfinder.Heuristics;
 
 import java.io.File;
 
 public class Parameters
 {
-    public enum Heuristics
+    public enum HeuristicType
     {
-        NONE, MANHATTAN, HAMMING, OUT_OF_ROW_AND_COLLUMN, MANHATTAN_AND_LINEAR_CONFLICT
+        NONE, MANHATTAN, HAMMING, OUT_OF_ROW_AND_COLLUMN, MANHATTAN_AND_LINEAR_CONFLICT;
+
+        public Heuristic getHeuristic()
+        {
+            switch (this)
+            {
+                case MANHATTAN:
+                    return Heuristics::manhattan;
+                case HAMMING:
+                    return Heuristics::hamming;
+                case OUT_OF_ROW_AND_COLLUMN:
+                    return Heuristics::outOfRowAndColumn;
+                case MANHATTAN_AND_LINEAR_CONFLICT:
+                    return Heuristics::manhattenLinearConflict;
+                default:
+                    return Heuristics::hamming;
+            }
+        }
     }
 
     public enum ArgumentErrors
@@ -19,7 +37,7 @@ public class Parameters
 
     private boolean        greedy             = false;
     private boolean        uniform            = false;
-    private Heuristics     specifiedHeuristic = Heuristics.NONE;
+    private HeuristicType  specifiedHeuristic = HeuristicType.NONE;
     private File           output             = null;
     private boolean        visualizer         = false;
     private int            randomSize         = 0;
@@ -55,12 +73,12 @@ public class Parameters
         this.uniform = uniform;
     }
 
-    public Heuristics getSpecifiedHeuristic()
+    public HeuristicType getSpecifiedHeuristic()
     {
         return specifiedHeuristic;
     }
 
-    public void setSpecifiedHeuristic(Heuristics specifiedHeuristic)
+    public void setSpecifiedHeuristic(HeuristicType specifiedHeuristic)
     {
         this.specifiedHeuristic = specifiedHeuristic;
     }

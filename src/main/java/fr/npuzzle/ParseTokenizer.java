@@ -36,16 +36,16 @@ public class ParseTokenizer
         switch (param.toLowerCase())
         {
             case "manhattan":
-                data.setSpecifiedHeuristic(Parameters.Heuristics.MANHATTAN);
+                data.setSpecifiedHeuristic(Parameters.HeuristicType.MANHATTAN);
                 return (true);
             case "hamming":
-                data.setSpecifiedHeuristic(Parameters.Heuristics.HAMMING);
+                data.setSpecifiedHeuristic(Parameters.HeuristicType.HAMMING);
                 return (true);
             case "outofrowandcollumn":
-                data.setSpecifiedHeuristic(Parameters.Heuristics.OUT_OF_ROW_AND_COLLUMN);
+                data.setSpecifiedHeuristic(Parameters.HeuristicType.OUT_OF_ROW_AND_COLLUMN);
                 return (true);
             case "manhattanlinearconflict":
-                data.setSpecifiedHeuristic(Parameters.Heuristics.MANHATTAN_AND_LINEAR_CONFLICT);
+                data.setSpecifiedHeuristic(Parameters.HeuristicType.MANHATTAN_AND_LINEAR_CONFLICT);
                 return (true);
             default:
                 data.setStatus(Parameters.ArgumentErrors.WRONG_HEURISTIC_PARAMETER);
