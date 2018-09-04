@@ -16,7 +16,7 @@ import javafx.util.Duration;
 
 public class PuzzleGrid extends GridPane
 {
-    private int        CELL_SIZE = 50;
+    private int        CELL_SIZE = 60;
     private double     MAX_TIME  = 20_000;
     private PathResult pathResult;
     private Label[][]  labelGrid;
@@ -60,7 +60,7 @@ public class PuzzleGrid extends GridPane
             translate.setFromX(from.getTranslateX());
             translate.setFromY(from.getTranslateY());
             translate.setToX(from.getTranslateX() - move.getAction().getxOffset() * CELL_SIZE);
-            translate.setToY(from.getTranslateY() - move.getAction().getyOffset() * CELL_SIZE + 8);
+            translate.setToY(from.getTranslateY() - move.getAction().getyOffset() * CELL_SIZE);
 
             translate.setInterpolator(Interpolator.EASE_BOTH);
             translate.setCycleCount(1);
