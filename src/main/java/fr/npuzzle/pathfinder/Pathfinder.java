@@ -1,16 +1,34 @@
 package fr.npuzzle.pathfinder;
 
+import com.google.common.hash.BloomFilter;
 import fr.npuzzle.Main;
-import fr.npuzzle.data.Action;
-import fr.npuzzle.data.Cell;
-import fr.npuzzle.data.ParsedPuzzle;
-import fr.npuzzle.data.State;
+import fr.npuzzle.data.*;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class Pathfinder
 {
     public static PathResult astar(ParsedPuzzle current, ParsedPuzzle desired, Heuristic heuristic)
+    {
+        if (Main.PARAMETERS.bloomEnabled())
+        {
+            BloomFilter<ParsedPuzzle> closedFilter = BloomFilter.create(ParsedPuzzleFunnel.INSTANCE,
+                    heuristic.apply(current, desired) * 116_000, 0.15);
+
+            return astar(current, desired, heuristic, closedFilter::put, closedFilter::mightContain);
+        }
+        else
+        {
+            Set<ParsedPuzzle> closedSet = new HashSet<>(heuristic.apply(current, desired) * 116_000);
+
+            return astar(current, desired, heuristic, closedSet::add, closedSet::contains);
+        }
+    }
+
+    private static PathResult astar(ParsedPuzzle current, ParsedPuzzle desired, Heuristic heuristic,
+                                    Consumer<ParsedPuzzle> addClosedSet, Predicate<ParsedPuzzle> containsClosedSet)
     {
         PathResult result = new PathResult();
         result.setStart(current);
@@ -30,13 +48,13 @@ public class Pathfinder
                     }
                     return state.getCost();
                 }));
-        Set<ParsedPuzzle> closedSet = new HashSet<>();
+
 
         openSet.add(new State(current, null, null));
         while (!openSet.isEmpty())
         {
             State currentNode = openSet.poll();
-            closedSet.add(currentNode.getData());
+            addClosedSet.accept(currentNode.getData());
 
             if (currentNode.getData().equals(desired))
             {
@@ -55,7 +73,7 @@ public class Pathfinder
                     continue;
                 action.move(currentNode).ifPresent(state ->
                 {
-                    if (!closedSet.contains(state.getData()))
+                    if (!containsClosedSet.test(state.getData()))
                     {
                         openSet.add(state);
                         result.addTimeComplexity();

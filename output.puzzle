@@ -1,0 +1,122 @@
+
+3x3
+1 6 3
+4 8 5
+7 2 0
+
+3x3
+1 6 3
+4 8 5
+7 0 2
+
+3x3
+1 6 3
+4 0 5
+7 8 2
+
+3x3
+1 6 3
+0 4 5
+7 8 2
+
+3x3
+1 6 3
+7 4 5
+0 8 2
+
+3x3
+1 6 3
+7 4 5
+8 0 2
+
+3x3
+1 6 3
+7 4 5
+8 2 0
+
+3x3
+1 6 3
+7 4 0
+8 2 5
+
+3x3
+1 6 3
+7 0 4
+8 2 5
+
+3x3
+1 0 3
+7 6 4
+8 2 5
+
+3x3
+0 1 3
+7 6 4
+8 2 5
+
+3x3
+7 1 3
+0 6 4
+8 2 5
+
+3x3
+7 1 3
+6 0 4
+8 2 5
+
+3x3
+7 1 3
+6 2 4
+8 0 5
+
+3x3
+7 1 3
+6 2 4
+0 8 5
+
+3x3
+7 1 3
+0 2 4
+6 8 5
+
+3x3
+0 1 3
+7 2 4
+6 8 5
+
+3x3
+1 0 3
+7 2 4
+6 8 5
+
+3x3
+1 2 3
+7 0 4
+6 8 5
+
+3x3
+1 2 3
+7 8 4
+6 0 5
+
+3x3
+1 2 3
+7 8 4
+0 6 5
+
+3x3
+1 2 3
+0 8 4
+7 6 5
+
+3x3
+1 2 3
+8 0 4
+7 6 5
+
+Took: 100 ms
+[ActionTaken{action=UP, from=Cell{x=2, y=1}}, ActionTaken{action=LEFT, from=Cell{x=2, y=2}}, ActionTaken{action=DOWN, from=Cell{x=1, y=2}}, ActionTaken{action=LEFT, from=Cell{x=1, y=1}}, ActionTaken{action=UP, from=Cell{x=0, y=1}}, ActionTaken{action=RIGHT, from=Cell{x=0, y=2}}, ActionTaken{action=RIGHT, from=Cell{x=1, y=2}}, ActionTaken{action=DOWN, from=Cell{x=2, y=2}}, ActionTaken{action=LEFT, from=Cell{x=2, y=1}}, ActionTaken{action=DOWN, from=Cell{x=1, y=1}}, ActionTaken{action=LEFT, from=Cell{x=1, y=0}}, ActionTaken{action=UP, from=Cell{x=0, y=0}}, ActionTaken{action=RIGHT, from=Cell{x=0, y=1}}, ActionTaken{action=UP, from=Cell{x=1, y=1}}, ActionTaken{action=LEFT, from=Cell{x=1, y=2}}, ActionTaken{action=DOWN, from=Cell{x=0, y=2}}, ActionTaken{action=DOWN, from=Cell{x=0, y=1}}, ActionTaken{action=RIGHT, from=Cell{x=0, y=0}}, ActionTaken{action=UP, from=Cell{x=1, y=0}}, ActionTaken{action=UP, from=Cell{x=1, y=1}}, ActionTaken{action=LEFT, from=Cell{x=1, y=2}}, ActionTaken{action=DOWN, from=Cell{x=0, y=2}}, ActionTaken{action=RIGHT, from=Cell{x=0, y=1}}]
+Complexity in Time: 21 756
+Complexity in Size: 8 407
+Moves: 23
+*************************************
