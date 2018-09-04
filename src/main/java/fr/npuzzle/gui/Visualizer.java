@@ -32,7 +32,7 @@ public class Visualizer extends Application
         StackPane root = new StackPane();
         root.getStyleClass().add("root");
 
-        Scene scene = new Scene(root, 800, 800);
+        Scene scene = new Scene(root, 350, 350);
         scene.getStylesheets().add("/fr/npuzzle/css/main.css");
 
         stage.setTitle("npuzzle");
@@ -48,6 +48,7 @@ public class Visualizer extends Application
         }
 
         Button start = new Button("START");
+        start.setId("start");
         start.setOnAction(e ->
         {
             transition.play();

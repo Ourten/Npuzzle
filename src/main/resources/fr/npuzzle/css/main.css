@@ -12,3 +12,19 @@
 .complete.puzzle-label {
     -fx-text-fill: green;
 }
+
+#start {
+    -fx-background-radius: 0 0 0 0;
+    -fx-background-color: #2196F3;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+    -fx-opacity: 0.87;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Open Sans";
+}
+
+#start:disabled {
+    -fx-opacity: 0.12;
+    -fx-background-color: #000000;
+}

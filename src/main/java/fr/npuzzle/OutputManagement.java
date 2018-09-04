@@ -56,9 +56,10 @@ public class OutputManagement
 
             System.out.println("\nPuzzle: " + files.get(index) + "\n" + consoleOutput);
 
-            Files.write(Paths.get(output.getAbsolutePath()),
-                    (getSteps(entry.getKey()) + "\n" + consoleOutput + "*************************************").getBytes(StandardCharsets.UTF_8),
-                    StandardOpenOption.APPEND);
+            if (output != null)
+                Files.write(Paths.get(output.getAbsolutePath()),
+                        (getSteps(entry.getKey()) + "\n" + consoleOutput + "*************************************").getBytes(StandardCharsets.UTF_8),
+                        StandardOpenOption.APPEND);
             index++;
         }
     }
