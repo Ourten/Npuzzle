@@ -12,7 +12,7 @@ public class ParseTokenizer
     public enum Token
     {
         FILE, GREED_TOKEN, UNIFORM_TOKEN, HEURISTIC_TOKEN, HEURISTIC_PARAMETER_TOKEN, OUTPUT_TOKEN,
-        OUTPUT_PARAMETER_TOKEN, VISUALIZER_TOKEN, RANDOM_TOKEN, RANDOM_PARAMETER_TOKEN
+        OUTPUT_PARAMETER_TOKEN, VISUALIZER_TOKEN, RANDOM_TOKEN, RANDOM_PARAMETER_TOKEN, BLOOM_TOKEN
     }
 
     private Token[]    tokens;
@@ -96,7 +96,11 @@ public class ParseTokenizer
         {
             return (Token.RANDOM_PARAMETER_TOKEN);
         }
-        if (param.equals("-g"))
+        else if (param.equals("-b")) {
+            data.setBloom(true);
+            return (Token.BLOOM_TOKEN);
+        }
+        else if (param.equals("-g"))
         {
             if (data.isUniform())
                 data.setStatus(Parameters.ArgumentErrors.CONFLICT_UNIFORM_GREEDY);

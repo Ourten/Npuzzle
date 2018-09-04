@@ -37,6 +37,7 @@ public class Parameters
 
     private boolean        greedy             = false;
     private boolean        uniform            = false;
+    private boolean        bloom              = false;
     private HeuristicType  specifiedHeuristic = HeuristicType.NONE;
     private File           output             = null;
     private boolean        visualizer         = false;
@@ -78,10 +79,7 @@ public class Parameters
         return specifiedHeuristic;
     }
 
-    public void setSpecifiedHeuristic(HeuristicType specifiedHeuristic)
-    {
-        this.specifiedHeuristic = specifiedHeuristic;
-    }
+    public void setSpecifiedHeuristic(HeuristicType specifiedHeuristic) { this.specifiedHeuristic = specifiedHeuristic; }
 
     public File getOutput()
     {
@@ -103,13 +101,11 @@ public class Parameters
         this.visualizer = visualizer;
     }
 
-    public int getRandomSize()
-    {
-        return randomSize;
-    }
+    public boolean bloomEnabled() { return bloom; }
 
-    public void setRandomSize(int randomSize)
-    {
-        this.randomSize = randomSize;
-    }
+    public void setBloom(boolean bloom) { this.bloom = bloom; }
+
+    public int getRandomSize() { return randomSize; }
+
+    public void setRandomSize(int randomSize) { this.randomSize = randomSize; }
 }
