@@ -25,7 +25,7 @@ public class Main
 
         if (formatter.getParameters().getStatus() != Parameters.ArgumentErrors.NONE)
         {
-            System.err.println("error at arguments parsing (" + ParseTokenizer.getErrorMessage(formatter.getParameters().getStatus()) + ")");
+            System.err.println("Error at arguments parsing (" + ParseTokenizer.getErrorMessage(formatter.getParameters().getStatus()) + ")");
             System.exit(-1);
         }
 
@@ -49,21 +49,24 @@ public class Main
                 parsedPuzzles.stream().map(ParsedPuzzleMonad::getPuzzle).collect(Collectors.toList());
         Map<PathResult, Long> results = new LinkedHashMap<>();
         Heuristic heuristic = formatter.getParameters().getSpecifiedHeuristic().getHeuristic();
+
+        int index = 0;
         for (ParsedPuzzle puzzle : puzzles)
         {
             ParsedPuzzle solution = Pathfinder.getSnailSolution(puzzle);
 
             if (!SolverCheck.isSolvable(puzzle, solution))
             {
-                System.err.println("Puzzle has no valid solutions.");
-                break;
+                System.err.println("Puzzle " + formatter.getFiles().get(index) + " has no valid solutions.");
+                System.exit(-1);
             }
 
             long start = System.currentTimeMillis();
             results.put(Pathfinder.astar(puzzle, solution, heuristic), System.currentTimeMillis() - start);
+            index++;
         }
 
-                try
+        try
         {
             OutputManagement.output(results, formatter.getFiles(), formatter.getParameters().getOutput());
         } catch (IOException e)
@@ -71,7 +74,7 @@ public class Main
             System.err.println("Error while writing output: " + e.getMessage());
         }
 
-        if(formatter.getParameters().isVisualizerEnabled())
+        if (formatter.getParameters().isVisualizerEnabled())
             Visualizer.start(results, formatter.getFiles());
     }
 }
