@@ -13,6 +13,7 @@ public class Pathfinder
     {
         PathResult result = new PathResult();
         result.setStart(current);
+        result.setEnd(desired);
 
         PriorityQueue<State> openSet = new PriorityQueue<>(Comparator.comparingInt(
                 (State state) ->

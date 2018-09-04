@@ -1,0 +1,14 @@
+.root {
+    -fx-background-color: ALICEBLUE;
+}
+
+.puzzle-label {
+    -fx-text-fill: black;
+    -fx-opacity: 0.87;
+    -fx-font-size: 40px;
+    -fx-font-family: "Open Sans";
+}
+
+.complete.puzzle-label {
+    -fx-text-fill: green;
+}

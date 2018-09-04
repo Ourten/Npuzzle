@@ -50,4 +50,14 @@ public enum Action
 
         return Optional.of(new State(copy, from, action));
     }
+
+    public byte getxOffset()
+    {
+        return xOffset;
+    }
+
+    public byte getyOffset()
+    {
+        return yOffset;
+    }
 }

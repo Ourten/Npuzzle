@@ -8,7 +8,8 @@ import java.util.List;
 
 public class PathResult
 {
-    private ParsedPuzzle start;
+    private ParsedPuzzle      start;
+    private ParsedPuzzle      end;
     private List<ActionTaken> moves;
     private int               timeComplexity, sizeComplexity;
 
@@ -40,6 +41,16 @@ public class PathResult
     public void setStart(ParsedPuzzle start)
     {
         this.start = start;
+    }
+
+    public ParsedPuzzle getEnd()
+    {
+        return end;
+    }
+
+    public void setEnd(ParsedPuzzle end)
+    {
+        this.end = end;
     }
 
     public void addTimeComplexity()
