@@ -9,7 +9,7 @@
     -fx-font-family: "Open Sans";
 }
 
-.complete.puzzle-label {
+.complete.puzzle-label, .complete .puzzle-label {
     -fx-text-fill: green;
 }
 

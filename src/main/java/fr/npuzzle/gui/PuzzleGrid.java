@@ -16,7 +16,8 @@ import javafx.util.Duration;
 
 public class PuzzleGrid extends GridPane
 {
-    private double     MAX_TIME = 20_000;
+    private int        CELL_SIZE = 50;
+    private double     MAX_TIME  = 20_000;
     private PathResult pathResult;
     private Label[][]  labelGrid;
 
@@ -24,7 +25,7 @@ public class PuzzleGrid extends GridPane
     {
         this.pathResult = pathResult;
 
-        this.setMaxSize(50 * pathResult.getStart().getSize(), 50 * pathResult.getStart().getSize());
+        this.setMaxSize(CELL_SIZE * pathResult.getStart().getSize(), CELL_SIZE * pathResult.getStart().getSize());
 
         this.labelGrid = new Label[pathResult.getStart().getSize()][];
         for (int x = 0; x < pathResult.getStart().getSize(); x++)
@@ -36,10 +37,10 @@ public class PuzzleGrid extends GridPane
                         String.valueOf(pathResult.getStart().getCell(x, y)));
                 label.getStyleClass().add("puzzle-label");
 
-                if(pathResult.getEnd().getCell(x,y)== pathResult.getStart().getCell(x,y))
+                if (pathResult.getEnd().getCell(x, y) == pathResult.getStart().getCell(x, y))
                     label.getStyleClass().add("complete");
 
-                label.setPrefSize(50, 50);
+                label.setPrefSize(CELL_SIZE, CELL_SIZE);
                 labelGrid[x][y] = label;
                 this.add(label, x, y);
 
@@ -58,8 +59,8 @@ public class PuzzleGrid extends GridPane
 
             translate.setFromX(from.getTranslateX());
             translate.setFromY(from.getTranslateY());
-            translate.setToX(from.getTranslateX() - move.getAction().getxOffset() * 50);
-            translate.setToY(from.getTranslateY() - move.getAction().getyOffset() * 58);
+            translate.setToX(from.getTranslateX() - move.getAction().getxOffset() * CELL_SIZE);
+            translate.setToY(from.getTranslateY() - move.getAction().getyOffset() * CELL_SIZE + 8);
 
             translate.setInterpolator(Interpolator.EASE_BOTH);
             translate.setCycleCount(1);

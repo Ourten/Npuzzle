@@ -60,6 +60,7 @@ public class Visualizer extends Application
 
         transition.setOnFinished(e ->
         {
+            root.getStyleClass().add("complete");
             start.setText("COMPLETED");
         });
     }
