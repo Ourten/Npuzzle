@@ -17,19 +17,22 @@ import java.util.stream.Collectors;
 
 public class Main
 {
+    public static Parameters PARAMETERS;
+
     public static void main(String[] args)
     {
         InputFormatter formatter = new InputFormatter(args);
+        PARAMETERS = formatter.getParameters();
 
         System.out.println(Arrays.toString(args));
 
-        if (formatter.getParameters().getStatus() != Parameters.ArgumentErrors.NONE)
+        if (PARAMETERS.getStatus() != Parameters.ArgumentErrors.NONE)
         {
-            System.err.println("Error at arguments parsing (" + ParseTokenizer.getErrorMessage(formatter.getParameters().getStatus()) + ")");
+            System.err.println("Error at arguments parsing (" + ParseTokenizer.getErrorMessage(PARAMETERS.getStatus()) + ")");
             System.exit(-1);
         }
 
-        if (formatter.getParameters().getRandomSize() > 2)
+        if (PARAMETERS.getRandomSize() > 2)
             formatter.getFiles().add("random");
 
         List<ParsedPuzzleMonad> parsedPuzzles =
@@ -48,7 +51,7 @@ public class Main
         List<ParsedPuzzle> puzzles =
                 parsedPuzzles.stream().map(ParsedPuzzleMonad::getPuzzle).collect(Collectors.toList());
         Map<PathResult, Long> results = new LinkedHashMap<>();
-        Heuristic heuristic = formatter.getParameters().getSpecifiedHeuristic().getHeuristic();
+        Heuristic heuristic = PARAMETERS.getSpecifiedHeuristic().getHeuristic();
 
         int index = 0;
         for (ParsedPuzzle puzzle : puzzles)
@@ -68,13 +71,13 @@ public class Main
 
         try
         {
-            OutputManagement.output(results, formatter.getFiles(), formatter.getParameters().getOutput());
+            OutputManagement.output(results, formatter.getFiles(), PARAMETERS.getOutput());
         } catch (IOException e)
         {
             System.err.println("Error while writing output: " + e.getMessage());
         }
 
-        if (formatter.getParameters().isVisualizerEnabled())
+        if (PARAMETERS.isVisualizerEnabled())
             Visualizer.start(results, formatter.getFiles());
     }
 }

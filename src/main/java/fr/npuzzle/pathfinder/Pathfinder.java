@@ -1,5 +1,6 @@
 package fr.npuzzle.pathfinder;
 
+import fr.npuzzle.Main;
 import fr.npuzzle.data.Action;
 import fr.npuzzle.data.Cell;
 import fr.npuzzle.data.ParsedPuzzle;
@@ -19,7 +20,14 @@ public class Pathfinder
                 (State state) ->
                 {
                     if (state.getCost() == -1)
-                        state.setCost(state.getAncestorCount() + heuristic.apply(state.getData(), desired));
+                    {
+                        if (Main.PARAMETERS.isGreedy())
+                            state.setCost(heuristic.apply(state.getData(), desired));
+                        else if (Main.PARAMETERS.isUniform())
+                            state.setCost(state.getAncestorCount());
+                        else
+                            state.setCost(state.getAncestorCount() + heuristic.apply(state.getData(), desired));
+                    }
                     return state.getCost();
                 }));
         Set<ParsedPuzzle> closedSet = new HashSet<>();
