@@ -3,10 +3,7 @@ package fr.npuzzle;
 import fr.npuzzle.data.Parameters;
 import fr.npuzzle.data.ParsedPuzzle;
 import fr.npuzzle.gui.Visualizer;
-import fr.npuzzle.pathfinder.Heuristic;
-import fr.npuzzle.pathfinder.PathResult;
-import fr.npuzzle.pathfinder.Pathfinder;
-import fr.npuzzle.pathfinder.SolverCheck;
+import fr.npuzzle.pathfinder.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -65,7 +62,7 @@ public class Main
             }
 
             long start = System.currentTimeMillis();
-            results.put(Pathfinder.astar(puzzle, solution, heuristic), System.currentTimeMillis() - start);
+            results.put(Pathfinder.astar(puzzle, solution, Heuristics::manhattenLinearConflict), System.currentTimeMillis() - start);
             index++;
         }
 

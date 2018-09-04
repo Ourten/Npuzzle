@@ -74,6 +74,28 @@ public class ParseTokenizer
 
     private Token identifyToken(Parameters data, Token precedingToken, String param, boolean isLast)
     {
+        if (precedingToken == Token.HEURISTIC_TOKEN && identifyHeuristicParameter(data, param))
+        {
+            return (Token.HEURISTIC_PARAMETER_TOKEN);
+        }
+        else if (precedingToken == Token.OUTPUT_TOKEN)
+        {
+            try
+            {
+                File file = new File(param);
+                file.delete();
+                file.createNewFile();
+                data.setOutput(file);
+            } catch (IOException e)
+            {
+                data.setStatus(Parameters.ArgumentErrors.FILE_COULD_NOT_BE_WRITTEN);
+            }
+            return (Token.OUTPUT_PARAMETER_TOKEN);
+        }
+        else if (precedingToken == Token.RANDOM_TOKEN && identifyRandomSize(data, param))
+        {
+            return (Token.RANDOM_PARAMETER_TOKEN);
+        }
         if (param.equals("-g"))
         {
             if (data.isUniform())
@@ -88,11 +110,11 @@ public class ParseTokenizer
             data.setUniform(true);
             return (Token.UNIFORM_TOKEN);
         }
-        else if (precedingToken == Token.FILE && param.equals("-h") && !isLast)
+        else if (param.equals("-h") && !isLast)
         {
             return (Token.HEURISTIC_TOKEN);
         }
-        else if (precedingToken == Token.FILE && param.equals("-o") && !isLast)
+        else if (param.equals("-o") && !isLast)
         {
             if (data.getOutput() != null)
                 data.setStatus(Parameters.ArgumentErrors.TWO_DEFINED_OUTPUT);
@@ -103,38 +125,33 @@ public class ParseTokenizer
             data.setVisualizer(true);
             return (Token.VISUALIZER_TOKEN);
         }
-        else if (precedingToken == Token.FILE && param.equals("-r") && !isLast)
+        else if (param.equals("-r") && !isLast)
         {
             return (Token.RANDOM_TOKEN);
-        }
-        else if (precedingToken == Token.HEURISTIC_TOKEN && identifyHeuristicParameter(data, param))
-        {
-            return (Token.HEURISTIC_PARAMETER_TOKEN);
-        }
-        else if (precedingToken == Token.OUTPUT_TOKEN)
-        {
-            try
-            {
-                File file = new File(param);
-                file.delete();
-                file.createNewFile();
-                data.setOutput(file);
-            } catch (IOException e) {
-                data.setStatus(Parameters.ArgumentErrors.FILE_COULD_NOT_BE_WRITTEN);
-            }
-            return (Token.OUTPUT_PARAMETER_TOKEN);
-        }
-        else if (precedingToken == Token.RANDOM_TOKEN && identifyRandomSize(data, param))
-        {
-            return (Token.RANDOM_PARAMETER_TOKEN);
         }
         else return (Token.FILE);
     }
 
     public static String getErrorMessage(Parameters.ArgumentErrors error)
     {
-        //todo
-        return ("todo error message");
+        switch (error)
+        {
+            case CONFLICT_UNIFORM_GREEDY:
+                return ("cannot specify uniform and greedy search at the same time");
+            case WRONG_HEURISTIC_PARAMETER:
+                return ("this heuristic does not exist, please choose between" +
+                        "manhattan, hamming, outofrowandcollumn, or manhattanlinearconflict");
+            case WRONG_CHAR_FOUND_RANDOM:
+                return ("random parameter should only contain numeric characters");
+            case INVALID_PUZZLE_SIZE:
+                return ("random parameter should be between 3 to 7 inclusive");
+            case TWO_DEFINED_OUTPUT:
+                return ("the program output should be defined only once");
+            case FILE_COULD_NOT_BE_WRITTEN:
+                return ("indicated output file could not be written");
+            default:
+                return ("no error was found in program parameters");
+        }
     }
 
     public Token[] getTokens()
