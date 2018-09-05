@@ -134,6 +134,9 @@ public class InputFormatter
                 }
                 if (!sizeDefined)
                 {
+                    if (new BigInteger(currentWords[0]).compareTo(new BigInteger("2")) <= 0
+                            || new BigInteger(currentWords[0]).compareTo(new BigInteger("10")) >= 0)
+                        return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.INVALID_PUZZLE_SIZE));
                     result = new ParsedPuzzle(Integer.parseInt(currentWords[0]));
                     sizeDefined = true;
                 }
@@ -147,6 +150,8 @@ public class InputFormatter
             }
             i++;
         }
+        if (!sizeDefined)
+            return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NO_SPECIFIED_SIZE));
         if (result != null && currentLine < result.getSize())
             return (new ParsedPuzzleMonad(ParsedPuzzleMonad.ErrorType.NOT_ENOUGH_VALID_ROWS));
         if (!hasZero)
