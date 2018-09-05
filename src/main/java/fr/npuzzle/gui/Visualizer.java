@@ -47,6 +47,8 @@ public class Visualizer extends Application
 
         if (titleString.contains("/"))
             titleString = titleString.substring(titleString.lastIndexOf("/") + 1);
+        else if (titleString.contains("\\"))
+            titleString = titleString.substring(titleString.lastIndexOf("\\") + 1);
         Label title = new Label(titleString);
         root.getChildren().add(title);
         StackPane.setAlignment(title, Pos.TOP_CENTER);
