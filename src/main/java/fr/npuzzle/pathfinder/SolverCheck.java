@@ -39,11 +39,13 @@ public class SolverCheck
 
         for (int i = 0; i < values.length; i++)
         {
-            if (i == values.length - 1)
-                break;
-
-            if (values[i] < values[i + 1])
-                inversions++;
+            if (values[i] == ParsedPuzzle.EMPTY)
+                continue;
+            for (int j = i + 1; j < values.length; j++)
+            {
+                if (values[j] > values[i])
+                    inversions++;
+            }
         }
         return inversions;
     }

@@ -67,9 +67,10 @@ public class Main
                 System.err.println("Puzzle " + formatter.getFiles().get(index) + " has no valid solutions.");
                 System.exit(-1);
             }
+            System.out.println("Puzzle is solvable.");
 
             long start = System.currentTimeMillis();
-            results.put(Pathfinder.astar(puzzle, solution, Heuristics::manhattenLinearConflict), System.currentTimeMillis() - start);
+            results.put(Pathfinder.astar(puzzle, solution, heuristic), System.currentTimeMillis() - start);
             index++;
         }
 

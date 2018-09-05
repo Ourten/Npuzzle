@@ -63,7 +63,7 @@ public class Heuristics
         return distance;
     }
 
-    public static int manhattenLinearConflict(ParsedPuzzle current, ParsedPuzzle desired)
+    public static int manhattanLinearConflict(ParsedPuzzle current, ParsedPuzzle desired)
     {
         int distance = 0;
 

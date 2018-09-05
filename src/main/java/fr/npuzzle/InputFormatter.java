@@ -2,6 +2,8 @@ package fr.npuzzle;
 
 import fr.npuzzle.data.Parameters;
 import fr.npuzzle.data.ParsedPuzzle;
+import fr.npuzzle.pathfinder.Pathfinder;
+import fr.npuzzle.pathfinder.SolverCheck;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class InputFormatter
     private ParseTokenizer tokenizer;
     private Parameters     parameters;
     private boolean        hasZero = false;
-    HashSet<Integer>       numSet;
+    HashSet<Integer> numSet;
 
     public InputFormatter(String[] args)
     {
@@ -41,7 +43,22 @@ public class InputFormatter
         }
     }
 
-    public static ParsedPuzzle getRandomPuzzle(int size)
+    private static ParsedPuzzle getRandomPuzzle(int size)
+    {
+        ParsedPuzzle random = genRandomPuzzle(size);
+
+        System.out.println("Creating random puzzle... #1");
+        int count = 2;
+        while (!SolverCheck.isSolvable(random, Pathfinder.getSnailSolution(random)))
+        {
+            random = genRandomPuzzle(size);
+            System.out.println("Creating random puzzle... #" + count);
+            count++;
+        }
+        return random;
+    }
+
+    private static ParsedPuzzle genRandomPuzzle(int size)
     {
         Random randomInstance;
         ParsedPuzzle puzzle;
@@ -50,7 +67,7 @@ public class InputFormatter
         int tmp;
         HashSet<Integer> set;
 
-        set = new HashSet<Integer>();
+        set = new HashSet<>();
         x = 0;
         y = 0;
         randomInstance = new Random();
@@ -61,7 +78,7 @@ public class InputFormatter
             {
                 tmp = -1;
                 while (set.contains(tmp) || tmp <= 0)
-                     tmp = randomInstance.nextInt(99);
+                    tmp = randomInstance.nextInt(99);
                 puzzle.setCell(x, y, tmp);
                 set.add(tmp);
                 x++;

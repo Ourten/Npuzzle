@@ -22,7 +22,7 @@ public class Parameters
                 case OUT_OF_ROW_AND_COLLUMN:
                     return Heuristics::outOfRowAndColumn;
                 case MANHATTAN_AND_LINEAR_CONFLICT:
-                    return Heuristics::manhattenLinearConflict;
+                    return Heuristics::manhattanLinearConflict;
                 default:
                     return Heuristics::hamming;
             }
