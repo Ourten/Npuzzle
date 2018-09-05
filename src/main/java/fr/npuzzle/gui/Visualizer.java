@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -23,7 +24,10 @@ public class Visualizer extends Application
         Visualizer.results = results;
         Visualizer.files = files;
 
-        Application.launch();
+        if (!files.isEmpty() && !results.isEmpty())
+            Application.launch();
+        else
+            System.err.println("Cannot start visualizer without input!");
     }
 
     @Override
@@ -39,9 +43,23 @@ public class Visualizer extends Application
         stage.setScene(scene);
         stage.show();
 
+        String titleString = files.get(0);
+
+        if (titleString.contains("/"))
+            titleString = titleString.substring(titleString.lastIndexOf("/") + 1);
+        Label title = new Label(titleString);
+        root.getChildren().add(title);
+        StackPane.setAlignment(title, Pos.TOP_CENTER);
+        title.setId("title-label");
+
         SequentialTransition transition = new SequentialTransition();
+
+        boolean first = true;
         for (Map.Entry<PathResult, Long> entry : results.entrySet())
         {
+            if (!first)
+                break;
+            first = false;
             GridPane grid = new PuzzleGrid(entry.getKey(), transition);
             root.getChildren().add(grid);
             StackPane.setAlignment(grid, Pos.CENTER);

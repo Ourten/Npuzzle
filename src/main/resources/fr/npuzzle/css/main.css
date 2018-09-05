@@ -2,7 +2,7 @@
     -fx-background-color: ALICEBLUE;
 }
 
-.puzzle-label {
+.puzzle-label, #title-label {
     -fx-text-fill: black;
     -fx-opacity: 0.87;
     -fx-font-size: 40px;
