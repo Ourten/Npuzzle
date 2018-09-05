@@ -143,7 +143,7 @@ public class ParseTokenizer
             case CONFLICT_UNIFORM_GREEDY:
                 return ("cannot specify uniform and greedy search at the same time");
             case WRONG_HEURISTIC_PARAMETER:
-                return ("this heuristic does not exist, please choose between" +
+                return ("this heuristic does not exist, please choose between " +
                         "manhattan, hamming, outofrowandcollumn, or manhattanlinearconflict");
             case WRONG_CHAR_FOUND_RANDOM:
                 return ("random parameter should only contain numeric characters");
@@ -156,6 +156,19 @@ public class ParseTokenizer
             default:
                 return ("no error was found in program parameters");
         }
+    }
+
+    public static String getUsage() {
+        return (
+                "usage: npuzzle [options] [<FILES NAMES>]\n" +
+                "options:\n" +
+                "  -u uniform search\n" +
+                "  -g greedy search\n" +
+                "  -h [manhattan | hamming | outofrowandcolumn | manhattanlinearconflict] heuristics\n" +
+                "  -o [file] output file\n" +
+                "  -v visualizer\n" +
+                "  -r [number] random state of specified size\n" +
+                "  -b bloom filter");
     }
 
     public Token[] getTokens()

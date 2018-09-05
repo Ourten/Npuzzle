@@ -119,6 +119,7 @@ public class InputFormatter
         currentLine = 0;
         i = 0;
         numSet = new HashSet<Integer>();
+        hasZero = false;
         while (i < lines.size())
         {
             if (lines.get(i).matches("([\\s\\S]*-[0-9][\\s\\S]*)+"))

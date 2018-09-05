@@ -18,6 +18,12 @@ public class Main
 
     public static void main(String[] args)
     {
+
+        if (args.length <= 0)
+        {
+            System.out.println(ParseTokenizer.getUsage());
+            return;
+        }
         InputFormatter formatter = new InputFormatter(args);
         PARAMETERS = formatter.getParameters();
 
@@ -26,6 +32,7 @@ public class Main
         if (PARAMETERS.getStatus() != Parameters.ArgumentErrors.NONE)
         {
             System.err.println("Error at arguments parsing (" + ParseTokenizer.getErrorMessage(PARAMETERS.getStatus()) + ")");
+            System.out.println(ParseTokenizer.getUsage());
             System.exit(-1);
         }
 
